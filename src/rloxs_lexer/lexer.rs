@@ -1,6 +1,6 @@
 
 
-use crate::{lexer::errors::UnexpectedChar, syntax::token::{LiteralKind, Token, TokenKind}};
+use crate::{rloxs_lexer::errors::UnexpectedChar, syntax::token::{LiteralKind, Token, TokenKind}};
 
 use super::errors::LexerError;
 
