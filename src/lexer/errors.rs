@@ -5,6 +5,12 @@ pub struct UnexpectedChar {
     ch: char,
 }
 
+impl UnexpectedChar {
+    pub fn new(ch: char) -> Self {
+        Self { ch }
+    }
+}
+
 impl Display for UnexpectedChar {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "Unexpected token: {}", self.ch)

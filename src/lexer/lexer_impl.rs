@@ -1,8 +1,8 @@
 
 
-use crate::syntax::token::{LiteralKind, Token, TokenKind};
+use crate::{lexer::errors::UnexpectedChar, syntax::token::{LiteralKind, Token, TokenKind}};
 
-use super::error::LexerError;
+use super::errors::LexerError;
 
 pub struct Lexer {
     input: Vec<char>,
@@ -177,9 +177,12 @@ impl Lexer {
                             Err(e) => Err(e)?,
                         }
                     },
+                    _ if ch.is_alphanumeric() || ch == '_' => {
+                        let ident = self.read_ident(ch);
+                        self.keyword_or_ident(ident)
+                    },
                     _ => {
-                        
-                        todo!();
+                        Err(UnexpectedChar::new(ch))?
                     }
             },
             None => {
@@ -204,13 +207,49 @@ impl Lexer {
                 result.push(first_char);
 
                 while let Some('0'..='9') | Some('.') = self.peek_char() {
-                    let num = self.peek_char().unwrap();
+                    let num = self.next_char().unwrap();
                     result.push(num);
                 }
 
                 result.iter().collect()
             },
             _ => unreachable!(),
+        }
+    }
+
+    fn read_ident(&mut self, first_char: char) -> String {
+        let mut ident = String::from(first_char);
+        while let Some(ch) = self.peek_char() {
+            if ch.is_alphanumeric() || ch == '_' {
+                self.next_char();
+                ident.push(ch);
+            }else {
+                break;
+            }
+        }
+
+        ident
+    }
+
+    fn keyword_or_ident(&mut self, ident: String) -> TokenKind {
+        match ident.as_str() {
+            "nil" => TokenKind::Nil,
+            "and" => TokenKind::And,
+            "or" => TokenKind::Or,
+            "if" => TokenKind::If,
+            "let" => TokenKind::Let,
+            "else" => TokenKind::Else,
+            "for" => TokenKind::For,
+            "while" => TokenKind::While,
+            "fn" => TokenKind::Fn,
+            "return" => TokenKind::Return,
+            "class" => TokenKind::Class,
+            "this" => TokenKind::This,
+            "super" => TokenKind::Super,
+            "true" => TokenKind::Literal { kind: LiteralKind::Bool(true) },
+            "false" => TokenKind::Literal { kind: LiteralKind::Bool(false) },
+            "print" => TokenKind::Print,
+            _ => TokenKind::Ident(ident),
         }
     }
 }

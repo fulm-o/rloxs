@@ -5,7 +5,6 @@ pub enum LiteralKind {
     String(String),
     Number(f64),
     Bool(bool),
-    None,
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -34,14 +33,13 @@ pub enum TokenKind {
     LessEqual,
 
     // Literals
-    Identifier,
+    Ident(String),
     Literal { kind: LiteralKind },
 
     // Keywords
     And,
     Class,
     Else,
-    False,
     Fn,
     For,
     Nil,
@@ -51,7 +49,6 @@ pub enum TokenKind {
     Return,
     Super,
     This,
-    True,
     Let,
     While,
 

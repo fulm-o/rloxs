@@ -1,5 +1,5 @@
 pub mod lexer_impl;
-mod error;
+mod errors;
 
 #[cfg(test)]
 mod tests;

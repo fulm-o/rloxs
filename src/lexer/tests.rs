@@ -117,3 +117,162 @@ fn lex_line_comment() {
 
     assert_eq!(tokens, expect_tokens);
 }
+
+#[test]
+fn lex_hello_world() {
+    let tokens = test_helper(r#"
+fn func() {
+    print "Hello, World!";
+}
+"#.trim());
+
+    let expect_token = vec![
+        Token {
+            token_kind: TokenKind::Fn,
+            pos: 0,
+            line: 1,
+            column: 0,
+        },
+        Token {
+            token_kind: TokenKind::Ident("func".to_string()),
+            pos: 3,
+            line: 1,
+            column: 3,
+        },
+        Token {
+            token_kind: TokenKind::LeftParen,
+            pos: 7,
+            line: 1,
+            column: 7,
+        },
+        Token {
+            token_kind: TokenKind::RightParen,
+            pos: 8,
+            line: 1,
+            column: 8,
+        },
+        Token {
+            token_kind: TokenKind::LeftBrace,
+            pos: 10,
+            line: 1,
+            column: 10,
+        },
+        Token {
+            token_kind: TokenKind::Print,
+            pos: 16,
+            line: 2,
+            column: 4,
+        },
+        Token {
+            token_kind: TokenKind::Literal {
+                kind: LiteralKind::String("Hello, World!".to_string())
+            },
+            pos: 22,
+            line: 2,
+            column: 10,
+        },
+        Token {
+            token_kind: TokenKind::Semicolon,
+            pos: 37,
+            line: 2,
+            column: 25,
+        },
+        Token {
+            token_kind: TokenKind::RightBrace,
+            pos: 39,
+            line: 3,
+            column: 0,
+        },
+    ];
+
+    assert_eq!(tokens, expect_token);
+}
+
+#[test]
+fn lex_various_tokens() {
+    let tokens = test_helper(r#"
+let x = 42;
+let y = x + 1.23;
+"#.trim());
+
+    let expect_tokens = vec![
+        Token {
+            token_kind: TokenKind::Let,
+            pos: 0,
+            line: 1,
+            column: 0,
+        },
+        Token {
+            token_kind: TokenKind::Ident("x".to_string()),
+            pos: 4,
+            line: 1,
+            column: 4,
+        },
+        Token {
+            token_kind: TokenKind::Equal,
+            pos: 6,
+            line: 1,
+            column: 6,
+        },
+        Token {
+            token_kind: TokenKind::Literal {
+                kind: LiteralKind::Number(42.0),
+            },
+            pos: 8,
+            line: 1,
+            column: 8,
+        },
+        Token {
+            token_kind: TokenKind::Semicolon,
+            pos: 10,
+            line: 1,
+            column: 10,
+        },
+        Token {
+            token_kind: TokenKind::Let,
+            pos: 12,
+            line: 2,
+            column: 0,
+        },
+        Token {
+            token_kind: TokenKind::Ident("y".to_string()),
+            pos: 16,
+            line: 2,
+            column: 4,
+        },
+        Token {
+            token_kind: TokenKind::Equal,
+            pos: 18,
+            line: 2,
+            column: 6,
+        },
+        Token {
+            token_kind: TokenKind::Ident("x".to_string()),
+            pos: 20,
+            line: 2,
+            column: 8,
+        },
+        Token {
+            token_kind: TokenKind::Plus,
+            pos: 22,
+            line: 2,
+            column: 10,
+        },
+        Token {
+            token_kind: TokenKind::Literal {
+                kind: LiteralKind::Number(1.23),
+            },
+            pos: 24,
+            line: 2,
+            column: 12,
+        },
+        Token {
+            token_kind: TokenKind::Semicolon,
+            pos: 28,
+            line: 2,
+            column: 16,
+        },
+    ];
+
+    assert_eq!(tokens, expect_tokens);
+}
