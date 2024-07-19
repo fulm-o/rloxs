@@ -24,6 +24,7 @@ fn lex_new_line_and_space() {
         Token { token_kind: TokenKind::GreaterEqual, pos: 9, line: 2, column: 1 },
         /* スペース×3 */
         Token { token_kind: TokenKind::Dot, pos: 14, line: 2, column: 6 },
+        Token { token_kind: TokenKind::Eof, pos: 15, line: 2, column: 7 },
     ];
 
     assert_eq!(tokens, expect_tokens);
@@ -52,6 +53,11 @@ fn lex_string() {
             pos: 10,
             line: 2,
             column: 0,
+        },
+        Token { token_kind: TokenKind::Eof,
+            pos: 19,
+            line: 2,
+            column: 9,
         },
     ];
 
@@ -113,6 +119,12 @@ fn lex_line_comment() {
             line: 2,
             column: 4,
         },
+        Token {
+            token_kind: TokenKind::Eof,
+            pos: 27,
+            line: 2,
+            column: 5,
+        },
     ];
 
     assert_eq!(tokens, expect_tokens);
@@ -126,7 +138,7 @@ fn func() {
 }
 "#.trim());
 
-    let expect_token = vec![
+    let expect_tokens = vec![
         Token {
             token_kind: TokenKind::Fn,
             pos: 0,
@@ -183,9 +195,15 @@ fn func() {
             line: 3,
             column: 0,
         },
+        Token {
+            token_kind: TokenKind::Eof,
+            pos: 40,
+            line: 3,
+            column: 1,
+        },
     ];
 
-    assert_eq!(tokens, expect_token);
+    assert_eq!(tokens, expect_tokens);
 }
 
 #[test]
@@ -271,6 +289,12 @@ let y = x + 1.23;
             pos: 28,
             line: 2,
             column: 16,
+        },
+        Token {
+            token_kind: TokenKind::Eof,
+            pos: 29,
+            line: 2,
+            column: 17,
         },
     ];
 

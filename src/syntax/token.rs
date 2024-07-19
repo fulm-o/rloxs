@@ -2,12 +2,12 @@ use std::fmt;
 
 #[derive(Debug, PartialEq, Clone)]
 pub enum LiteralKind {
-    String(String),
-    Number(f64),
     Bool(bool),
+    Number(f64),
+    String(String),
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum TokenKind {
     // Single-character tokens
     LeftParen,

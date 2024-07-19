@@ -6,6 +6,7 @@ use std::{fs::File, io::{Read, Write}, path::Path};
 
 use clap::{Arg, Command};
 use rloxs_lexer::Lexer;
+use rloxs_parser::parser::Parser;
 
 fn cli() -> Command {
     Command::new("rloxs")
@@ -69,7 +70,12 @@ fn run(line: &str) {
         }
     };
 
-    for t in tokens {
-        println!("{}", t);
-    }
+    // for t in &tokens {
+    //     println!("{}", t);
+    // }
+
+    println!("{:?}", &tokens);
+
+    let parser = Parser::new(tokens);
+
 }

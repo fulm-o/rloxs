@@ -2,3 +2,4 @@
 mod tests;
 
 pub mod parser;
+mod errors;

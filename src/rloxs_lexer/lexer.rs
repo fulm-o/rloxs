@@ -29,6 +29,10 @@ impl Lexer {
             self.tokens.push(token);
         }
 
+        //Token::Eofを位置付きで追加するためもう一回呼ぶ
+        let token = self.next_token()?;
+        self.tokens.push(token);
+
         Ok(self.tokens.to_owned())
     }
 
@@ -182,7 +186,7 @@ impl Lexer {
                         self.keyword_or_ident(ident)
                     },
                     _ => {
-                        Err(UnexpectedChar::new(ch))?
+                        Err(UnexpectedChar::new(ch, line, column))?
                     }
             },
             None => {
