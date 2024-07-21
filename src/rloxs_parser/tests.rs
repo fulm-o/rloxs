@@ -43,6 +43,6 @@ fn feature() {
         },
     ];
 
-    let mut parser = Parser::new(tokens).unwrap();
-    let ast = parser.parse_expression();
+    let mut parser = Parser::new(tokens);
+    let _ast = parser.parse_expression();
 }

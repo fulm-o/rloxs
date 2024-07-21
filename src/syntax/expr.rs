@@ -2,7 +2,9 @@ use super::token::LiteralKind;
 
 #[derive(Debug)]
 pub enum Expr {
-    Literal {kind: LiteralKind},
+    Assign{ name: String, expr: Box<Expr>},
+    Literal { kind: LiteralKind},
+    Variable(String),
     BinaryOp { left: Box<Expr>, operator: Operator, right: Box<Expr>},
     UnaryOp { operator: Operator, operand: Box<Expr>},
     Grouping( Box<Expr>),
@@ -20,9 +22,9 @@ pub struct Operator {
 pub enum OperatorKind {
     // Arithmetic operators
     ///"+"
-    Plus,
+    Add,
     ///"-"
-    Minus,
+    Subtract,
     ///"*"
     Multiply,
     ///"/"

@@ -5,3 +5,4 @@ mod errors;
 mod tests;
 
 pub use lexer::Lexer;
+pub use errors::LexerError;

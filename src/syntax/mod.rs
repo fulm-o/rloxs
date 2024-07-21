@@ -5,3 +5,4 @@ pub use token::Token;
 pub use token::TokenKind;
 pub use expr::Expr;
 pub use expr::Operator;
+pub use expr::OperatorKind;

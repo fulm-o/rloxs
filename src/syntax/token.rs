@@ -22,7 +22,7 @@ pub enum TokenKind {
     Slash,
     Star,
 
-    // One or two chracter tokens
+    // One or two character tokens
     Bang,
     BangEqual,
     Equal,

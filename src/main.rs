@@ -1,10 +1,13 @@
 mod rloxs_lexer;
 mod rloxs_parser;
 mod syntax;
+mod rloxs_eval;
+mod errors;
 
 use std::{fs::File, io::{Read, Write}, path::Path};
 
 use clap::{Arg, Command};
+use errors::CompileError;
 use rloxs_lexer::Lexer;
 use rloxs_parser::parser::Parser;
 
@@ -37,7 +40,9 @@ fn main() {
             panic!("{}", e);
         }
 
-        run(&source);
+        if let Err(e) = run(&source) {
+            panic!("{}", e);
+        }
 
     }else {
         repl();
@@ -57,25 +62,25 @@ fn repl() {
             line => line,
         };
 
-        run(line);
+        if let Err(e) = run(line) {
+            eprintln!("{e}");
+            continue;
+        }
     }
 }
 
-fn run(line: &str) {
+fn run(line: &str) -> Result<(), CompileError>{
     let mut lexer = Lexer::new(line);
-    let tokens = match lexer.lex() {
-        Ok(tokens) => tokens,
-        Err(e) => {
-            panic!("{}", e);
-        }
-    };
+    let tokens = lexer.lex()?;
 
-    // for t in &tokens {
-    //     println!("{}", t);
-    // }
+    for t in &tokens {
+        println!("{}", t);
+    }
 
-    println!("{:?}", &tokens);
+    let mut parser = Parser::new(tokens);
+    let ast = parser.parse_expression()?;
 
-    let parser = Parser::new(tokens);
+    println!("{:?}", ast);
 
+    Ok(())
 }
